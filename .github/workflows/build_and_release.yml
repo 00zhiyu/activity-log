@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # Allows manual triggering
     inputs:
       tag:
-        description: 'Build and Release'     
+        description: 'tag name'     
         required: true
       note:
         description: 'Release note'
