@@ -30,9 +30,13 @@ jobs:
         run: |
           git config --global user.name '00zhiyu'
           git config --global user.email 'wooyuu92@gmail.com'
-          git commit -am "dist build"
-          git push
-
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -am "dist build"
+            git push
+          else
+            echo "No changes to commit."
+          fi
   release:
     runs-on: ubuntu-latest
     needs: build
@@ -45,12 +49,12 @@ jobs:
           git pull
       - name: Tag it
         run: |
-          git tag -a ${{ inputs.tag }} -m "${{ inputs.note }}" master
-          git push --tags
+          git tag -a build_and_release.yml -m "更新標籤" master
+          git push --tags -f
       - name: Release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ inputs.tag }}
           release_name: Release ${{ inputs.tag }}
