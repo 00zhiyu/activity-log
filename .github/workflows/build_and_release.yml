@@ -72,7 +72,7 @@ jobs:
           git tag -a build_and_release.yml -m "更新標籤" master
           git push --tags -f
       - name: Release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
